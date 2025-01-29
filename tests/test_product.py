@@ -1,3 +1,8 @@
+from unittest.mock import patch
+
+from src.product import Product
+
+
 def test_product_1_init(product_iphone):
     assert product_iphone.name == "iPhone 15 Pro Max"
     assert product_iphone.description == "1Tb"
@@ -10,3 +15,41 @@ def test_product_2_init(product_huawei):
     assert product_huawei.description == "512Gb"
     assert product_huawei.price == 30000
     assert product_huawei.quantity == 14
+
+
+def test_price_property(product_iphone):
+    assert product_iphone.price == 200000
+
+
+def test_new_product(new_product_valid_1, new_product_valid_2, new_product_valid_3):
+    products = []
+    new_product = Product.new_product(new_product_valid_1, products)
+    assert new_product.name == "Samsung Galaxy S23 Ultra"
+    assert new_product.description == "256GB, Серый цвет, 200MP камера"
+    assert new_product.price == 180000.0
+    assert new_product.quantity == 5
+    new_product = Product.new_product(new_product_valid_2, products)
+    assert new_product.name == "iPhone 15"
+    assert len(products) == 2
+    new_product = Product.new_product(new_product_valid_3, products)
+    assert new_product.name == "Samsung Galaxy S23 Ultra"
+    assert len(products) == 2
+    assert new_product.quantity == 8
+
+
+def test_price_update(product_iphone):
+    with patch("builtins.input", side_effect=["y"]):
+        product_iphone.price = 190000
+        assert product_iphone.price == 190000
+
+
+def test_price_update_invalid(product_iphone):
+    with patch("builtins.print") as mocked_print:
+        product_iphone.price = 0
+        mocked_print.assert_called_with("Цена не должна быть нулевая или отрицательная")
+
+
+def test_price_update_no_ans(product_iphone):
+    with patch("builtins.input", side_effect=["n"]):
+        product_iphone.price = 300000
+        assert product_iphone.price == 200000
