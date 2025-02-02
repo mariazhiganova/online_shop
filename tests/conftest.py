@@ -2,6 +2,7 @@ import pytest
 
 from src.category import Category
 from src.product import Product
+from src.product_iterator import ProductIterator
 
 
 @pytest.fixture
@@ -15,8 +16,8 @@ def product_huawei():
 
 
 @pytest.fixture
-def category_phone():
-    return Category("Смартфоны", "Умные телефоны", ["iPhone 15 Pro Max", "Huawei 7S"])
+def category_phone(product_huawei, product_iphone):
+    return Category("Смартфоны", "Умные телефоны", [product_iphone, product_huawei])
 
 
 @pytest.fixture
@@ -42,3 +43,8 @@ def new_product_valid_3():
         "price": 180000.0,
         "quantity": 3,
     }
+
+
+@pytest.fixture
+def product_iterator(category_phone):
+    return ProductIterator(category_phone)
