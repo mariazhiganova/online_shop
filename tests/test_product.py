@@ -49,7 +49,17 @@ def test_price_update_invalid(product_iphone):
         mocked_print.assert_called_with("Цена не должна быть нулевая или отрицательная")
 
 
-def test_price_update_no_ans(product_iphone):
+def test_price_update_no_ans(product_iphone, capsys):
     with patch("builtins.input", side_effect=["n"]):
-        product_iphone.price = 300000
+        product_iphone.price = 100000
+        captured = capsys.readouterr()
         assert product_iphone.price == 200000
+        assert "Вы отказались от изменения цены. Она останется прежней." in captured.out
+
+
+def test_product_str(product_iphone):
+    assert str(product_iphone) == "iPhone 15 Pro Max, 200000 руб. Остаток: 20 шт."
+
+
+def test_product_add(product_iphone, product_huawei):
+    assert product_iphone + product_huawei == 4420000
