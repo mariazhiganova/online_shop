@@ -20,7 +20,10 @@ class Product:
         """
         Складывает стоимость товаров определенной категории на складе
         """
-        return (self.quantity * self.__price) + (other.quantity * other.__price)
+        if type(self) is type(other):
+            return (self.quantity * self.__price) + (other.quantity * other.__price)
+
+        raise TypeError
 
     @property
     def price(self):

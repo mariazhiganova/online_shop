@@ -32,12 +32,16 @@ class Category:
         """
         return self.__products
 
-    def add_product(self, product: Product):
+    def add_product(self, product):
         """
-        Метод, увеличивающий счетчик кол-ва продуктов.
+        Метод, добавляющий продукт в список и увеличивающий счетчик кол-ва продуктов.
         """
-        self.__products.append(product)
-        Category.product_count += 1
+        if isinstance(product, Product):
+            self.__products.append(product)
+            Category.product_count += 1
+
+        else:
+            raise TypeError
 
     @property
     def products(self):
