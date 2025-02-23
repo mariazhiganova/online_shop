@@ -53,3 +53,11 @@ def test_add_product_error(product_iphone):
     category = Category("Смартфоны", "Современные смартфоны", [product_iphone])
     with pytest.raises(TypeError):
         category.add_product("Продукт другой категории")
+
+
+def test_middle_price(category_zero_products):
+    assert len(category_zero_products.products) == 0
+    assert category_zero_products.middle_price() == 0
+
+def test_middle_price_valid(category_phone):
+    assert category_phone.middle_price() == 115000
