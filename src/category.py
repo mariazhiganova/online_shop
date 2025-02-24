@@ -1,3 +1,4 @@
+from src.exceptions import ZeroQuantityError
 from src.product import Product
 
 
@@ -37,8 +38,20 @@ class Category:
         Метод, добавляющий продукт в список и увеличивающий счетчик кол-ва продуктов.
         """
         if isinstance(product, Product):
-            self.__products.append(product)
-            Category.product_count += 1
+            try:
+                if product.quantity == 0:
+                    raise ZeroQuantityError('Невозможно добавить товар с нулевым количеством')
+
+            except ZeroQuantityError as er:
+                print(str(er))
+
+            else:
+                self.__products.append(product)
+                Category.product_count += 1
+                print('Товар добавлен успешно')
+
+            finally:
+                print('Обработка добавления товара завершена')
 
         else:
             raise TypeError
